@@ -1,16 +1,38 @@
 const YOUTUBE_API_KEY = 'AIzaSyATiULH7dW5PLdRBdj_4Hd2WNg4OoJyzsI';
 
 export const youtubeApi = {
-  // 人気の動画を取得
-  getPopularVideos: async (regionCode = 'JP', maxResults = 20) => {
+  // 多カテゴリの急上昇動画をミックスして取得 (多様性確保)
+  getPopularVideos: async (maxResults = 60, regionCode = 'JP') => {
     try {
-      const response = await fetch(
-        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${regionCode}&maxResults=${maxResults}&key=${YOUTUBE_API_KEY}`
+      console.log(`Initiating diverse abyss scan (targeting ${maxResults} nodes)...`);
+      
+      // 取得するカテゴリID（1:アニメ, 10:音楽, 17:スポーツ, 20:ゲーム, 24:エンタメ, 28:科学技術）
+      const categories = [1, 10, 17, 20, 24, 28];
+      
+      // 各カテゴリから少なめに取得して混ぜる
+      const results = await Promise.all(
+        categories.map(catId => 
+          fetch(
+            `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails,statistics&chart=mostPopular&regionCode=${regionCode}&videoCategoryId=${catId}&maxResults=10&key=${YOUTUBE_API_KEY}`
+          ).then(res => res.json())
+        )
       );
-      const data = await response.json();
-      return data.items || [];
+
+      let allItems = [];
+      results.forEach(data => {
+        if (data.items) allItems = [...allItems, ...data.items];
+      });
+
+      // IDベースで重複排除
+      const uniqueItems = Array.from(new Map(allItems.map(item => [item.id, item])).values());
+
+      // 毎回異なる顔ぶれにするためにシャッフル
+      const shuffled = uniqueItems.sort(() => Math.random() - 0.5);
+      
+      console.log(`Scan complete: ${shuffled.length} diverse units detected.`);
+      return shuffled.slice(0, maxResults);
     } catch (error) {
-      console.error('Error fetching popular videos:', error);
+      console.error('Observation failed:', error);
       return [];
     }
   },

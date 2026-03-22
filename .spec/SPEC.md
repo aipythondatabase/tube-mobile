@@ -15,13 +15,10 @@
 
 ## 技術構成
 - フロントエンド：React Native (Expo)
-- バックエンド：Firebase（Firestore、Storage、Auth）
-  - 動画ストレージ：YouTube Data API v3
-  - ユーザーデータ・コメント：Firestore
-  - 認証：Firebase Authentication
-- 動画投稿：YouTube Data APIを通じてYouTubeに直接アップロード
+- バックエンド：Google スプレッドシート + Google Apps Script (GAS)
+  - 動画のメタデータ（投稿情報）・コメント・ユーザー：Google スプレッドシート
+  - 認証：GASによる独自認証（ID/Password）
+  - 動画本体のストレージ：YouTube Data API v3 を通じてYouTubeに直接アップロード
 
 ## バックエンド選定の理由
-- Googleスプレッドシートは動画管理・リアルタイム性に不向き
-- Firebaseは無料枠で数百人規模に対応可能
-- YouTubeとの連携がスムーズ
+- 当初はFirebaseを選定していましたが、Firebase依存を脱却し、スプレッドシートとGASを用いた構成に移行（PLAN.mdに基づく変更）。

@@ -1,35 +1,24 @@
 # MEMORY
 
 ## プロジェクト概要
-- スマホYouTubeアプリ（React Native/Expo）
-- 数百人規模のコミュニティ向け
-- YouTube公式API使用（違法性回避）
+- アプリ名: 「蒼銀の断罪」（Azure Silver Conviction）
+- スマホYouTube探索・管理アプリ（React Native/Expo）
+- 従来の動画アプリの常識を覆す「位置ベース操作」と「SF/ターミナルUX」を採用
 
 ## 学習した知識・教訓
 
-### 2026-03-22 セッション1
-
-#### 技術スタック決定
-- **バックエンド**: Firebase採用（Airtable・スプレッドシートは不採用）
-  - 理由: GAS/スプレッドシートはAPI制限が厳しい（20,000回/日）
-  - Firebaseは無料枠で十分、リアルタイム機能が使える
-- **認証**: Firebase Authentication（Email/Password）
-- **動画**: YouTube Data API v3
-
-#### 実装完了
-- ✅ Firebaseプロジェクトセットアップ
-- ✅ ログイン/登録画面
-- ✅ 動画一覧表示
-- ✅ 動画再生
-- ✅ 検索機能
-
-#### トラブルシューティング
-- **Expo SDK 55**: Expo Goで動作可
-- **react-native-webview**: `npx expo install react-native-webview` でインストール必要
-- **Metroキャッシュエラー**: `.expo`フォルダ削除で解決
+### 2026-03-23 セッション
+- **コンセプトの昇華**: FirebaseからGAS/スプレッドシートへの移行を経て、単なる動画アプリから「情報の深淵（アビス）を探索・断罪するツール」へと進化。
+- **UI/UXの革新**:
+  - `VideoCard`: 左端（リフレッシュ）、中央（再生）、右端（履歴）という3分割タップ機能を実装。
+  - `HomeScreen`: `LayoutAnimation` を活用した行単位の動画入れ替え（Replenish）を実装。
+  - `Block Mode (Purge)`: 不要な情報を「断罪（ブロック）」し、即座にストックから情報を補充する仕組み。
+- **技術構成**:
+  - バックエンド: GASによる独自認証（ID/Pass）
+  - データベース: Google スプレッドシート（予定）
+  - API: YouTube Data API v3 (Abyss Scanロジックによる多カテゴリ取得)
 
 #### 次回タスク
-- 動画投稿画面
-- 動画編集機能
-- コメント機能
-- マイページ
+- 動画投稿（情報の同期）画面の実装
+- マイページ（記録の保管庫）の実装
+- コメント（思念の重層）機能の実装
